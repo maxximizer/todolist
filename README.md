@@ -46,12 +46,13 @@ my-app
 ----------
 Above we can see application UI break up into components, that represent every piece of data model
 ![alt text](https://raw.githubusercontent.com/maxximizer/todolist/master/img/mytodolist.png)
+<br>
 We can distinct following pieces:
-1.<b>App (violet)</b>: contains all data model
-2.<b>todoHeader (pink)</b>: displays heading for application
-3.<b> todoForm (green)</b> : includes user input for todo task
-4.<b>todoList (red) </b>: wraps all items get from user input
-5.<b>todoListItem (yellow)</b>:  displays row for each task
+- <b>App (violet)</b>: contains all data model
+- <b>todoHeader (pink)</b>: displays heading for application
+- <b> todoForm (green)</b> : includes user input for todo task
+- <b>todoList (red) </b>: wraps all items get from user input
+- <b>todoListItem (yellow)</b>:  displays row for each task
 Hierarchy would present as follows:
 <ul>
 <li>App
@@ -80,6 +81,7 @@ In initial entry file ``` index.js ``` is defined ```ReactDOM.render()``` which 
 As next step, let's build an app based on stateless components, there will be no interactivity for user
 #### App.js
 ```
+import React, { Component } from 'react';
 import TodoList from './todoList';
 import TodoForm from './todoForm';
 import TodoHeader from './todoHeader';
@@ -103,7 +105,8 @@ Remeber that every time we are importing  components used in class
 
 #### TodoHeader.js
 ```
-(...)
+import React, { Component } from 'react'; 
+
 class TodoHeader extends Component {
 
   render() 
@@ -115,6 +118,8 @@ export default TodoHeader;
 ```
 #### TodoForm.js
 ```
+import React, { Component } from 'react';
+
 class TodoForm extends Component {
 
   render() {     
@@ -132,7 +137,9 @@ export default TodoForm;
 
 #### TodoList.js
 ```
-(...)
+import React, { Component } from 'react';
+import TodoListItem from '/todoListItem';
+
 class TodoList extends Component {
 
   render() 
@@ -149,6 +156,8 @@ export default TodoList;
 ```
 #### TodoListItem.js
 ```
+import React, { Component } from 'react';
+
 class TodoListItem extends Component {
    
     render() {
@@ -216,7 +225,7 @@ export default App;
 
 -	To ```const``` todos variable we assigned an object with ```item``` and ```isDone``` properties that reflects the structure of an initial state .
 - We add a class [constructor](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes#Constructor) that assigns the initial this.state
-- We pass todos as a props to our list component from the App component.
+- We pass todos as a props to our ```TodoList``` component from the ```App`` component.
 
 <b>TodoList.js</b>
 ```
@@ -243,7 +252,8 @@ class TodoList extends Component {
 
 export default TodoList;
 ```
-In TodoList component we have to serve all passed props and map it into every TodoListItem. To do so, we are creating function ```addListItems()```  that map every todo into TodoListItem passing props: ```index``` (every ```li``` element  has to posses an unique key), ```todo.item``` and  ```todo.isDone```. For most of computation there was used a javascript library [Lodash](https://lodash.com/docs/4.17.5) which involver ready to use functions, it is imported in the beginning of component ```import _ from 'lodash';```
+In the ```TodoList``` component we have to serve all passed props and map it into every ```TodoListItem```. To do so, we are creating function ```addListItems()```  that map every todo into ```TodoListItem``` passing props: ```index``` (every ```li``` element  has to posses an unique key), ```todo.item``` and  ```todo.isDone```. 
+For most of computation here was use a javascript library [Lodash](https://lodash.com/docs/4.17.5) which involves ready to use functions. Lodash is imported in the beginning of the component ```import _ from 'lodash';```
 
 <b>TodoListItem.js </b>
 ```
@@ -267,6 +277,7 @@ Now we are ready to see our initial todo task on the list on page
 
 ### Serve an user input
 Here we will build a functionality for serving user input in form, so that our state.todos will be updated along to this.
+<br>
 <b> App.js </b>
 
 ```
@@ -278,7 +289,7 @@ addTodo(todo) {
     this.setState({todos: this.state.todos})  
   }
  ```
-In the component we are adding function ```addTodo(todo)``` that push new todo into array of current todos state. Thanks to the ```setState()``` call, React knows the state has changed, and calls the render() method again to learn what should be on the screen. 
+In the component we are adding function ```addTodo(todo)``` that pushes a new todo into an array of current todos state. Thanks to the ```setState()``` call, React knows the state has changed, and calls the ```render()``` method again to learn what should be on the screen. 
    ```       
 <TodoForm  addTodo={this.addTodo.bind(this)}/>
 ```
@@ -310,14 +321,14 @@ handleAdd(event){
 
 export default TodoForm;
 ```
-Next goal is to update our state with new upcoming from user input. To do it we need to assign to ```onSubmit``` event 	```handleAdd``` function which does these things:
+Next goal is to update our state with new upcoming from user input. To do it we need to assign to ```onSubmit``` event 	```handleAdd(event)``` function which does these things:
 
 -	The ```preventDefault()``` method cancels the event if it is cancelable, meaning that the default action that belongs to the event will not occur.
 -	setting ```const createInput```  to ```this.refs.createInput	``` thanks to that DOM  node input is accessible 
 -	using  ```addTodo()``` function to push every task to todos array after submit 
 -	cleaning input field after a submit action is triggered, by resetting term to the initial empty string value
 
-After such instructions, we can start  adding new tasks to out TODO list.
+After such instructions, we can start  adding new tasks to our TODO list.
 ### Step 4: Removing and updating status isDone of items
 ----------
 <b>App.js</b>
@@ -376,16 +387,16 @@ export default TodoListItem;
 ```
 
 ### Removing an item
-To delete an item from our array of states we are using a function ```deleteTodo(todoToDelete)``` which with underscore method ```_.remove``` which iterates through our todos and finds the one that we target and later updates state.todos, which automatically calls method ```render()```.
+To delete an item from our array of states, we are using a function ```deleteTodo(todoToDelete)``` which with underscore method ```_.remove```  iterates through our todos and finds the one that we target and later updates state.todos, which automatically calls method ```render()```.
 
 Function  ```deleteTodo(todoToDelete)``` is passed by props to ```onClick``` event in ```TodoListItem```.  
 Note: every props coming from ```App``` to ```TodoListItem``` has to go through ```TodoList```
 
 
 ### Updating item's status isDone
-To update an item's status ```isDone```, we are using a function ```toggleTodo(todo) ``` , which doing following things:
--uses ```_.find()``` to find our target todo among ```state.todos```	
--changes its ```state.isDone``` on opposite value: ```false``` or ```true```
+To update an item's status ```isDone```, we are using a function ```toggleTodo(todo) ``` , which is doing following things:
+- uses ```_.find()``` to find our target todo among ```state.todos```	
+- changes its ```state.isDone``` on opposite value: ```false``` or ```true```
 - updates ```state.todos```, which automatically calls method ```render()```.
 
 Function ```toggleTodo(todo) ``` is also passed to ```TodoListItem``` and it binds to onClick event on paragraph ```<p>```in which our task is wrapped in.
@@ -395,9 +406,9 @@ Based on its status we also include some conditional styling. For this purpose w
 
 ### Step 5 Editing todo in list
 ----------
-In this part we need to introduced a previously mentioned state```isEditing``` in ```TodoListItem```. Reffering to its value, children of ```<li>``` element are changing from ```<p>``` and ```<button>```: 'Edit' and 'Delete' into ```<input>``` and ```<button>```: 'Save' and 'Cancel' respectively. To event ```onClick``` of 'Edit' and 'Cancel' buttons we assign ```onEditClick()``` and ```onCancelClick()``` functions that change state.isEditing on ```true``` and ```false``` respectively. 
+In this part we need to introduced a previously mentioned state```isEditing``` in ```TodoListItem```. Reffering to its value, children of ```<li>``` element are changing from ```<p>``` and ```<button>```: 'Edit' and 'Delete' into ```<input>``` and ```<button>```: 'Save' and 'Cancel' respectively. To event ```onClick``` of 'Edit' and 'Cancel' buttons we assign ```onEditClick()``` and ```onCancelClick()``` functions that change ```state.isEditing``` on ```true``` and ```false``` respectively. 
 
-We also have to take care that after saving a new element, the ```state.todos``` is updated with that change. To do it in ```App.js``` we create ```saveTodo(oldTodo,newTodo)``` which among current state.todos find the ```oldTodo``` and replaces it with ```newTodo``` and calls ```render()``` method. In ```todoListItem.js``` we define function ```onSaveClick()``` that is binded to Save button, what it does, is following:
+We also have to take care that after saving a new element, the ```state.todos``` is updated with that change. To do it in ```App.js``` we create ```saveTodo(oldTodo,newTodo)``` which among current ```state.todos``` finds the ```oldTodo``` and replaces it with ```newTodo``` and calls ```render()``` method. In ```todoListItem.js``` we define function ```onSaveClick()``` that is binded to Save button, what it does, is following:
 -	The ```preventDefault()``` method cancels the event if it is cancelable, meaning that the default action that belongs to the event will not occur.
 - setting old todo as what is in ```props.item```
 - setting new todo to ```this.refs.editInput.value;``` thanks to using ```ref``` in ``` <input type="text" defaultValue={this.props.item} ref="editInput" />```
@@ -562,3 +573,8 @@ class TodoListItem extends Component {
 
 export default TodoListItem;
 ```
+
+### Step 6 Styling
+----------
+
+In file ```index.css``` we are adding styles that can make our application more atrractive

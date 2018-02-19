@@ -42,13 +42,11 @@ li{
   position: absolute;
   right: 0;
   top:0px;
-  /* float: right; */
   margin-top: 15px;
   
 }
 
 button {
-  /* background: linear-gradient(to right, #549e39 , #8ab833); */
   border-radius: 25px;
   margin-right: 5px;
   min-width: 80px;
