@@ -1,17 +1,13 @@
 import React, { Component } from 'react';
-// import _ from 'lodash';
 
 class TodoListItem extends Component {
 
     constructor(props) {
         super(props);
-
         this.state = {
             isEditing: false
-            // isDeleted: false
         }
     }
-
 
     renderActionSection(){
         if(this.state.isEditing){
@@ -50,7 +46,6 @@ class TodoListItem extends Component {
         
         return(<p style={todoStyle} onClick={this.props.toggleTodo.bind(this,this.props.item)}>{this.props.item}</p> )
     }
-
 
     onEditClick(){
         this.setState({isEditing:true})
