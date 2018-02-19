@@ -35,10 +35,7 @@ class TodoListItem extends Component {
             'color': this.props.isDone ? 'green': 'red',
             'textDecoration': this.props.isDone ? 'line-through':'none',
             'cursor':'pointer',
-            'diaplay':'inline-block'
-            
-            
-            
+            'display':'inline-block'
         }
 
         if(this.state.isEditing){
